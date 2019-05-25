@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="bg-dark">
     <navbar></navbar>
     <HelloWorld/>
   </div>
@@ -18,6 +18,10 @@ export default {
 </script>
 
 <style>
+  #app{
+    min-height: 100vh;
+
+  }
 *{
   margin: 0px;
   padding: 0px;
