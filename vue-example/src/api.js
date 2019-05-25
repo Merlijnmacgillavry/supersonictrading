@@ -8,8 +8,8 @@ const TOKEN = "eyJhbGciOiJIUzI1NiJ9.bWVybGlqbm1hY0BnbWFpbC5jb20.g2jKjLhDnrLVoVnj
 if (!TOKEN) alert("No api token set. Insert your personal token in api.js!")
 
 const authorization = "Bearer " + TOKEN
-const uri = "https://traders.madx.nl"
-const wsUri = "wss://traders.madx.nl/graphql"
+const uri = "http://37.139.27.162"
+const wsUri = "ws://37.139.27.162/graphql"
 
 // Create our api client
 const client = new Client(uri, wsUri, authorization)
@@ -286,6 +286,7 @@ const NEWS_QUERY = gql`{
     content
     image
     releasedAt
+    source
   }
 }
 `
@@ -297,6 +298,7 @@ const SUBSCRIPTION_NEWS_QUERY = gql`subscription {
     content
     image
     releasedAt
+   
   }
 }
 `
