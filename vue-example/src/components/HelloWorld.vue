@@ -4,17 +4,18 @@
             <div class="row">
                 <div class="col-8">
                     <div class="box">
-                        <h1>CurrentDay: {{currentDay}}</h1>
+                        <h1>Current Day: {{currentDay}}</h1>
+                        <hr>
                         <h1>News</h1>
-                        <p>{{news}}</p>
+                        <p class="news">{{news}}</p>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="box">
                         <h1>Account: </h1>
-                        <h2> balance: {{ parseFloat(player.capital).toFixed(3) }}</h2>
-                        <h2>Net Profit: {{ parseFloat(player.capital - 1000000).toFixed(3)}}</h2>
-                        <h2>Profit: {{ parseFloat((player.capital - 1000000)/1000).toFixed(3)}} %</h2>
+                        <h2> balance: {{ capital }}</h2>
+                        <h2>Net Profit: {{ parseFloat(capital - 1000000).toFixed(3)}}</h2>
+                        <h2>Profit: {{ parseFloat((capital - 1000000)/1000).toFixed(3)}} %</h2>
                     </div>
                 </div>
             </div>
@@ -43,12 +44,13 @@
                              <th>amount</th>
                              <th>BM</th>
                              <th>SM</th>
+                             <th>LI</th>
 
                          </tr>
 
                         </thead>
                         <tbody>
-                        <tr v-for="c in companies" >
+                        <tr v-for="(c, index) in companies" >
                             <th><img class="img-fluid" style="height: 40px; border-radius: 50%; margin-right: 10px" v-bind:src="c.logo" alt="c.name"></th>
                             <th>{{c.name}}</th>
                             <th>{{getAmountOfShares(c.name) || 0}}</th>
@@ -58,9 +60,12 @@
                                 }}</th>
                             <th><button class="buy"> B </button></th>
                             <th><button class="sell"> S </button></th>
-                            <th><input type="text"></th>
+                            <th>
+                                <!--<input type="text" v-bind:value="amounts[index].amount">-->
+                            </th>
                             <th><button class="buy"  @click="buy(c.id)">B</button></th>
                             <th><button class="sell"  @click="sell(c.id)">S</button></th>
+                            <th><button class="liq"  @click="liquadate(c.name, c.id)">0</button></th>
                         </tr>
                         </tbody>
                     </table>
@@ -86,6 +91,8 @@
 			shares: null,
 			player: null,
             currentDay: null,
+            capital: null,
+            amounts: [],
 		}),
 
 		methods: {
@@ -103,6 +110,15 @@
 					);
 				}
 			},
+            makeAmounts(companies){
+			  for(var c in companies){
+				  var amount  = {
+					  company: companies[c].name,
+					  amount :0
+				  }
+              }
+              amounts.push(amount);
+            },
 			async sell(company) {
 				if (this.companyId) {
 					try {
@@ -117,6 +133,72 @@
 					);
 				}
 			},
+
+			async liquadate(company,i) {
+				console.log(company);
+				var amount_shares = this.getAmountOfShares(company, i);
+				console.log(this.getAmountOfShares(company));
+
+					if (amount_shares > 0 && amount_shares >= 100) {
+						if (this.companyId) {
+							try {
+								const id = await api.placeImmediateSellOrder(i, 100);
+								alert("liq top");
+							} catch (e) {
+								alert(e.message);
+							}
+						} else {
+							alert(
+								"Please wait for the first server response. (Did you fill in your credentials?)"
+							);
+						}
+					} else if (amount_shares > 0 && amount_shares < 100) {
+						if (this.companyId) {
+							try {
+								const id = await api.placeImmediateSellOrder(i, amount_shares);
+								alert("liq bot");
+							} catch (e) {
+								alert(e.message);
+							}
+						} else {
+							alert(
+								"Please wait for the first server response. (Did you fill in your credentials?)"
+							);
+						}
+					} else if (amount_shares < 0 && amount_shares <= -100) {
+						if (this.companyId) {
+							try {
+								const id = await api.placeImmediateBuyOrder(i, 100);
+								alert("liq -top");
+							} catch (e) {
+								alert(e.message);
+							}
+						} else {
+							alert(
+								"Please wait for the first server response. (Did you fill in your credentials?)"
+							);
+						}
+					}
+					else if (amount_shares < 0 && amount_shares > 100) {
+						if (this.companyId) {
+							try {
+								const id = await api.placeImmediateBuyOrder(i, -1 * amount_shares);
+								alert("liq -bot");
+							} catch (e) {
+								alert(e.message);
+							}
+						} else {
+							alert(
+								"Please wait for the first server response. (Did you fill in your credentials?)"
+							);
+						}
+					}
+
+
+
+
+
+			},
 			handleGameUpdate(game) {
 				// For now we want to extract the companyId and player name
 				this.name = game.player.name;
@@ -125,7 +207,9 @@
 				this.companies = game.companies;
 				this.shares = game.player.shares;
 				this.player = game.player;
-				this.currentDay = game.name[game.name.length-1]
+				this.currentDay = game.name.split(" ")[1];
+                this.capital = game.player.capital;
+
 			},
             // getLatestNews(amount){
 				// // var currentDay =
@@ -135,7 +219,6 @@
 				{
 
 					if (this.shares[s].company.name == company) {
-						console.log(this.shares[s].company.name + "company" + company);
 						return this.shares[s].amount;
 					}
 				}
@@ -224,5 +307,12 @@
     }
     .sell{
         background-color: red;
+    }
+    .news{
+        font-family: 'Volkhov', serif;
+
+    }
+    .liq{
+        background-color: gold;
     }
 </style>

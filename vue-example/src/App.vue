@@ -26,4 +26,9 @@ export default {
   margin: 0px;
   padding: 0px;
 }
+  @media (min-width: 1200px) {
+    .container{
+      max-width: 1800px;
+    }
+  }
 </style>
