@@ -137,7 +137,7 @@
 		name: "HelloWorld",
 
 		data: () => ({
-            startCap : 1055000,
+            startCap : 1085000,
 			name: "[waiting for server]",
 			companyId: null,
 			news: "No latest news yet!",
@@ -275,7 +275,8 @@
                 this.capital = game.player.capital;
                 this.sharesCap = this.SharesCapital();
                 this.getOwnedCompanies();
-                this.timeLeft = game.endAt - game.startAt;
+                console.log();
+                this.timeLeft = (new Date(game.endAt).getTime() - new Date().getTime())/1000;
 
 
 
@@ -293,10 +294,11 @@
             },
 
             handleNewsUpdate(news){
-				this.play();
+
                 this.headlines.unshift(news.headline);
                 this.content.unshift(news.content);
                 this.source(news.source);
+	            this.play();
             },
             // getLatestNews(amount){
 				// // var currentDay =
@@ -327,6 +329,9 @@
 
             }
 
+		},
+		created() {
+			this.audio = document.getElementById('audio');
 		},
 		// This method is called once when the component is started
 		mounted() {
