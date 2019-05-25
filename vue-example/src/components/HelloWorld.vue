@@ -21,9 +21,9 @@
             <div class="row">
                 <div class="col-12">
 
-                    <button @click="buy()">Buy 1 share of ING</button>
+                    <!--<button @click="buy()">Buy 1 share of ING</button>-->
 
-                    <button @click="sell()">Sell 1 share of ING</button>
+                    <!--<button @click="sell()">Sell 1 share of ING</button>-->
 
 
                 </div>
@@ -59,8 +59,8 @@
                             <th><button class="buy"> B </button></th>
                             <th><button class="sell"> S </button></th>
                             <th><input type="text"></th>
-                            <th><button class="buy">B</button></th>
-                            <th><button class="sell">S</button></th>
+                            <th><button class="buy"  @click="buy(c.id)">B</button></th>
+                            <th><button class="sell"  @click="sell(c.id)">S</button></th>
                         </tr>
                         </tbody>
                     </table>
@@ -89,10 +89,10 @@
 		}),
 
 		methods: {
-			async buy() {
+			async buy(company) {
 				if (this.companyId) {
 					try {
-						const id = await api.placeImmediateBuyOrder(this.companyId, 1);
+						const id = await api.placeImmediateBuyOrder(company, 1);
 						alert("We bought a new share with id: " + id);
 					} catch (e) {
 						alert(e.message);
@@ -103,10 +103,10 @@
 					);
 				}
 			},
-			async sell() {
+			async sell(company) {
 				if (this.companyId) {
 					try {
-						const id = await api.placeImmediateSellOrder(this.companyId, 1);
+						const id = await api.placeImmediateSellOrder(company, 1);
 						alert("We sold: " + id);
 					} catch (e) {
 						alert(e.message);
@@ -133,9 +133,10 @@
 			getAmountOfShares(company) {
 				for ( var s in this.shares)
 				{
-					if (this.shares[s].company.name == company) {
 
-						return s.amount;
+					if (this.shares[s].company.name == company) {
+						console.log(this.shares[s].company.name + "company" + company);
+						return this.shares[s].amount;
 					}
 				}
 			},
