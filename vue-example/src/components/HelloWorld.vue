@@ -7,7 +7,12 @@
                         <h1>Current Day: {{currentDay}}</h1>
                         <hr>
                         <h1>News</h1>
-                        <p class="news">{{news}}</p>
+                        <div class="list-group">
+                            <div class="list-item" v-for="(h, index) in headlines">
+                                <p class="news" style="border-bottom: 2px dotted white" v-if="index < 5 || 0">{{h}} </p>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-4">
@@ -93,6 +98,7 @@
             currentDay: null,
             capital: null,
             amounts: [],
+            headlines: []
 		}),
 
 		methods: {
@@ -206,14 +212,20 @@
 				this.Gamename = game.name;
 				this.companies = game.companies;
 				this.shares = game.player.shares;
+				this.companies = this.companies.sort((a, b) => {return this.getAmountOfShares(b.name)-this.getAmountOfShares(a.name)});
 				this.player = game.player;
 				this.currentDay = game.name.split(" ")[1];
                 this.capital = game.player.capital;
 
+
 			},
+            handleNewsUpdate(news){
+                this.headlines.unshift(news.headline);
+            },
             // getLatestNews(amount){
 				// // var currentDay =
             // },
+
 			getAmountOfShares(company) {
 				for ( var s in this.shares)
 				{
@@ -222,9 +234,9 @@
 						return this.shares[s].amount;
 					}
 				}
+				return 0;
 			},
 		},
-
 		// This method is called once when the component is started
 		mounted() {
 			// Subscribe to game updates
@@ -244,11 +256,16 @@
 				next: ({data}) => {
 					// Show the news
 					this.news = data.news.headline;
+					this.handleNewsUpdate(data.news);
 				},
 				error: e => {
 					console.error(e);
 				}
 			});
+			if(localStorage.news){
+				var news = ["test"]
+
+            }
 		},
 
 		// This method is called once when the component is destroyed
@@ -310,6 +327,7 @@
     }
     .news{
         font-family: 'Volkhov', serif;
+        font-size: 20px;
 
     }
     .liq{
