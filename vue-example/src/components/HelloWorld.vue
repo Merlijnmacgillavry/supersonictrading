@@ -36,11 +36,11 @@
                         <tr>
                             <th>Logo</th>
                             <th>Name</th>
-                            <th>#Shares</th>
+                            <th>Shares</th>
                             <th>Shares Value</th>
                             <th>Price</th>
-                            <th>BM</th>
-                            <th>SM</th>
+                            <th>Buy Market</th>
+                            <th>Sell Market</th>
                             <th>LI</th>
 
                         </tr>
