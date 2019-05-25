@@ -2,7 +2,7 @@
     <div id="helloworld" class="bg-dark">
         <div class="container">
             <div class="row">
-                <div class="col-8">
+                <div class="col-3">
                     <div class="box">
                         <h1>Current Day: {{currentDay}}</h1>
                         <hr>
@@ -17,43 +17,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="box">
-                        <h1>Account: </h1>
-                        <h2>Start Capital: {{parseFloat(startCap)}}</h2>
-                        <h2>Balance: {{ parseFloat(capital).toFixed(3) }}</h2>
-                        <h2>Shared Capital: {{ parseFloat(sharesCap).toFixed(3)}}</h2>
-                        <h2>Total Capital: {{ parseFloat(sharesCap + capital).toFixed(3)}}</h2>
-                        <h2>Net Profit: {{ parseFloat(capital + sharesCap - startCap).toFixed(3)}}</h2>
-                        <h2>Profit: {{ parseFloat((capital +sharesCap - startCap)/startCap*100).toFixed(3)}} %</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
+                <div class="col-6 box">
 
-                    <!--<button @click="buy()">Buy 1 share of ING</button>-->
-
-                    <!--<button @click="sell()">Sell 1 share of ING</button>-->
-
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
                     <table class="table">
                         <thead>
-                         <tr>
-                             <th>Logo</th>
-                             <th>Name</th>
-                             <th>#Shares</th>
-                             <th>Shares Value</th>
-                             <th>Price</th>
-                             <th>BM</th>
-                             <th>SM</th>
-                             <th>LI</th>
+                        <tr>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>#Shares</th>
+                            <th>Shares Value</th>
+                            <th>Price</th>
+                            <th>BM</th>
+                            <th>SM</th>
+                            <th>LI</th>
 
-                         </tr>
+                        </tr>
 
                         </thead>
                         <tbody>
@@ -72,6 +50,18 @@
                         </tbody>
                     </table>
 
+
+                </div>
+                <div class="col-3">
+                    <div class="box">
+                        <h1>Account: </h1>
+                        <h2>Start Capital: {{parseFloat(startCap)}}</h2>
+                        <h2>Balance: {{ parseFloat(capital).toFixed(3) }}</h2>
+                        <h2>Shared Capital: {{ parseFloat(sharesCap).toFixed(3)}}</h2>
+                        <h2>Total Capital: {{ parseFloat(sharesCap + capital).toFixed(3)}}</h2>
+                        <h2>Net Profit: {{ parseFloat(capital + sharesCap - startCap).toFixed(3)}}</h2>
+                        <h2>Profit: {{ parseFloat((capital +sharesCap - startCap)/startCap*100).toFixed(3)}} %</h2>
+                    </div>
                 </div>
             </div>
         </div>
