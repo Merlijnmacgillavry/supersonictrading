@@ -16,6 +16,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box">
+                        <h1>Account: </h1>
+                        <h2>Start Capital: {{parseFloat(startCap)}}</h2>
+                        <h2>Balance: {{ parseFloat(capital).toFixed(3) }}</h2>
+                        <h2>Shared Capital: {{ parseFloat(sharesCap).toFixed(3)}}</h2>
+                        <h2>Total Capital: {{ parseFloat(sharesCap + capital).toFixed(3)}}</h2>
+                        <h2>Net Profit: {{ parseFloat(capital + sharesCap - startCap).toFixed(3)}}</h2>
+                        <h2>Profit: {{ parseFloat((capital +sharesCap - startCap)/startCap*100).toFixed(3)}} %</h2>
+                    </div>
                 </div>
                 <div class="col-6 box">
 
@@ -53,15 +62,7 @@
 
                 </div>
                 <div class="col-3">
-                    <div class="box">
-                        <h1>Account: </h1>
-                        <h2>Start Capital: {{parseFloat(startCap)}}</h2>
-                        <h2>Balance: {{ parseFloat(capital).toFixed(3) }}</h2>
-                        <h2>Shared Capital: {{ parseFloat(sharesCap).toFixed(3)}}</h2>
-                        <h2>Total Capital: {{ parseFloat(sharesCap + capital).toFixed(3)}}</h2>
-                        <h2>Net Profit: {{ parseFloat(capital + sharesCap - startCap).toFixed(3)}}</h2>
-                        <h2>Profit: {{ parseFloat((capital +sharesCap - startCap)/startCap*100).toFixed(3)}} %</h2>
-                    </div>
+
                 </div>
             </div>
         </div>
