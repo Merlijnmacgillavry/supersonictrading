@@ -239,6 +239,8 @@ const SUBSCRIPTION_GAME_QUERY = gql`subscription {
   activeGame {
     id
     name
+    startAt
+    endAt
     player {
       name
       email

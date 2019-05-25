@@ -5,6 +5,7 @@
                 <div class="col-3">
                     <div class="box">
                         <h1>Current Day: {{currentDay}}</h1>
+                        <h2>TimeLeft: {{timeLeft}}</h2>
                         <hr>
                         <h1>News</h1>
                         <div class="list-group">
@@ -79,7 +80,35 @@
 
                         </thead>
                         <tbody>
-                        <tr v-for="(c, index) in owned" v-if="index <5" >
+                        <tr v-for="(c, index) in inNews" v-if="index <5" >
+                            <th><img class="img-fluid" style="height: 40px; border-radius: 50%; margin-right: 10px" v-bind:src="c.logo" alt="c.name"></th>
+
+                            <th>{{getAmountOfShares(c.name) || 0}}</th>
+
+                            <th>{{parseFloat(c.value).toFixed(3)
+                                }}</th>
+                            <th><button class="buy"  @click="buy(c.id)">B</button></th>
+                            <th><button class="sell"  @click="sell(c.id)">S</button></th>
+                            <th><button class="liq"  @click="liquadate(c.name, c.id)">0</button></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h3 class="box"><b style="color: #5288ff">Owned Companies</b> </h3>
+                    <table class="table box">
+                        <thead>
+                        <tr>
+                            <th>Logo</th>
+                            <th>#Shares</th>
+                            <th>Price</th>
+                            <th>BM</th>
+                            <th>SM</th>
+                            <th>LI</th>
+
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr v-for="(c, index) in owned"  >
                             <th><img class="img-fluid" style="height: 40px; border-radius: 50%; margin-right: 10px" v-bind:src="c.logo" alt="c.name"></th>
 
                             <th>{{getAmountOfShares(c.name) || 0}}</th>
@@ -93,6 +122,8 @@
                         </tbody>
                     </table>
                 </div>
+
+            </div>
             </div>
         </div>
     </div>
@@ -116,11 +147,13 @@
             currentDay: null,
             capital: null,
             amounts: [],
-            owned: [],
+            inNews: [],
             headlines: [],
             content: [],
             source: [],
             sharesCap: null,
+            owned: [],
+            timeLeft: null,
 		}),
 
 		methods: {
@@ -235,10 +268,23 @@
 				this.currentDay = game.name.split(" ")[1];
                 this.capital = game.player.capital;
                 this.sharesCap = this.SharesCapital();
+                this.getOwnedCompanies();
+                this.timeLeft = Math.abs(game.endAt - game.startAt);
 
 
 
 			},
+            getOwnedCompanies(){
+                var result = [];
+                for(var c in this.companies){
+                	for(var s in this.shares){
+                		if(this.companies[c].name == this.shares[s].company.name){
+                			result.unshift(this.companies[c]);
+                        }
+                    }
+                }
+                this.owned = result;
+            },
             handleNewsUpdate(news){
                 this.headlines.unshift(news.headline);
                 this.content.unshift(news.content);
@@ -267,7 +313,7 @@
             getNewsCompanies(headline, content) {
 		            for (var c in this.companies) {
 			            if (headline.toLowerCase().includes(this.companies[c].name.toLowerCase()) ) {
-				            this.owned.unshift(this.companies[c]);
+				            this.inNews.unshift(this.companies[c]);
 			            }
 		            }
 
@@ -305,6 +351,7 @@
 
             }
 		},
+
 
 		// This method is called once when the component is destroyed
 		beforeDestroy() {
