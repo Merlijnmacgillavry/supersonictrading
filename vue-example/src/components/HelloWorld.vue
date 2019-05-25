@@ -76,7 +76,7 @@
 		name: "HelloWorld",
 
 		data: () => ({
-            startCap : 1085000,
+            startCap : 1055000,
 			name: "[waiting for server]",
 			companyId: null,
 			news: "No latest news yet!",
@@ -87,7 +87,7 @@
             currentDay: null,
             capital: null,
             amounts: [],
-
+            owned: [],
             headlines: [],
             content: [],
             source: [],
@@ -99,7 +99,6 @@
 				if (this.companyId) {
 					try {
 						const id = await api.placeImmediateBuyOrder(company, 100);
-						alert("We bought a new share with id: " + id);
 					} catch (e) {
 						alert(e.message);
 					}
@@ -122,7 +121,6 @@
 				if (this.companyId) {
 					try {
 						const id = await api.placeImmediateSellOrder(company, 100);
-						alert("We sold: " + id);
 					} catch (e) {
 						alert(e.message);
 					}
@@ -142,7 +140,6 @@
 						if (this.companyId) {
 							try {
 								const id = await api.placeImmediateSellOrder(i, 100);
-								alert("liq top");
 							} catch (e) {
 								alert(e.message);
 							}
@@ -155,7 +152,6 @@
 						if (this.companyId) {
 							try {
 								const id = await api.placeImmediateSellOrder(i, amount_shares);
-								alert("liq bot");
 							} catch (e) {
 								alert(e.message);
 							}
@@ -168,7 +164,6 @@
 						if (this.companyId) {
 							try {
 								const id = await api.placeImmediateBuyOrder(i, 100);
-								alert("liq -top");
 							} catch (e) {
 								alert(e.message);
 							}
@@ -182,7 +177,6 @@
 						if (this.companyId) {
 							try {
 								const id = await api.placeImmediateBuyOrder(i, -1 * amount_shares);
-								alert("liq -bot");
 							} catch (e) {
 								alert(e.message);
 							}
@@ -241,6 +235,11 @@
 				}
 				return 0;
 			},
+            getNewsCompanies(){
+			    for(var h in this.headlines){
+			    	
+                }
+            }
 		},
 		// This method is called once when the component is started
 		mounted() {
