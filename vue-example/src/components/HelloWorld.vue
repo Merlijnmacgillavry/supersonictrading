@@ -9,7 +9,9 @@
                         <h1>News</h1>
                         <div class="list-group">
                             <div class="list-item" v-for="(h, index) in headlines">
-                                <p class="news" style="border-bottom: 2px dotted white" v-if="index < 5 || 0">{{h}} </p>
+                                <p class="news" style="" v-if="index < 5 || 0">{{h}} </p>
+                                <!--<p class="news" style="" v-if="index < 5 || 0">{{content[index]}} </p>-->
+                                <p class="news" style="border-bottom: 2px dotted white; color: gold" v-if="index < 5 || 0">{{source[index]}} </p>
 
                             </div>
                         </div>
@@ -18,9 +20,10 @@
                 <div class="col-4">
                     <div class="box">
                         <h1>Account: </h1>
-                        <h2> balance: {{ capital }}</h2>
-                        <h2>Net Profit: {{ parseFloat(capital - 1000000).toFixed(3)}}</h2>
-                        <h2>Profit: {{ parseFloat((capital - 1000000)/1000).toFixed(3)}} %</h2>
+                        <h2> balance: {{ parseFloat(capital).toFixed(3) }}</h2>
+                        <h2>Net Profit: {{ parseFloat(capital + sharesCap - startCap).toFixed(3)}}</h2>
+                        <h2>Shared Capital: {{ parseFloat(sharesCap).toFixed(3)}}</h2>
+                        <h2>Profit: {{ parseFloat((capital +sharesCap - startCap)/startCap*100).toFixed(3)}} %</h2>
                     </div>
                 </div>
             </div>
@@ -44,9 +47,6 @@
                              <th>#Shares</th>
                              <th>Shares Value</th>
                              <th>Price</th>
-                             <th>BL</th>
-                             <th>SL</th>
-                             <th>amount</th>
                              <th>BM</th>
                              <th>SM</th>
                              <th>LI</th>
@@ -64,10 +64,7 @@
                             <th>{{parseFloat(c.value).toFixed(3)
                                 }}</th>
                             <th><button class="buy"> B </button></th>
-                            <th><button class="sell"> S </button></th>
-                            <th>
-                                <!--<input type="text" v-bind:value="amounts[index].amount">-->
-                            </th>
+
                             <th><button class="buy"  @click="buy(c.id)">B</button></th>
                             <th><button class="sell"  @click="sell(c.id)">S</button></th>
                             <th><button class="liq"  @click="liquadate(c.name, c.id)">0</button></th>
@@ -88,6 +85,7 @@
 		name: "HelloWorld",
 
 		data: () => ({
+            startCap : 1000000,
 			name: "[waiting for server]",
 			companyId: null,
 			news: "No latest news yet!",
@@ -98,7 +96,11 @@
             currentDay: null,
             capital: null,
             amounts: [],
-            headlines: []
+
+            headlines: [],
+            content: [],
+            source: [],
+            sharesCap: 0,
 		}),
 
 		methods: {
@@ -212,20 +214,30 @@
 				this.Gamename = game.name;
 				this.companies = game.companies;
 				this.shares = game.player.shares;
-				this.companies = this.companies.sort((a, b) => {return this.getAmountOfShares(b.name)-this.getAmountOfShares(a.name)});
+				this.companies = this.companies.sort((a, b) => { if(a.name < b.name) { return -1; }
+					if(a.name > b.name) { return 1; }
+					return 0;});
 				this.player = game.player;
 				this.currentDay = game.name.split(" ")[1];
                 this.capital = game.player.capital;
-
+                this.sharesCap = this.SharesCapital();
 
 			},
             handleNewsUpdate(news){
                 this.headlines.unshift(news.headline);
+                this.content.unshift(news.content);
+                this.source.source(news.source);
             },
             // getLatestNews(amount){
 				// // var currentDay =
             // },
-
+            SharesCapital(){
+				result =0;
+			    for(var s in this.shares){
+			    	result += this.shares[s].amount * this.shares[s].value;
+                }
+                return result;
+            },
 			getAmountOfShares(company) {
 				for ( var s in this.shares)
 				{
