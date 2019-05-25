@@ -26,9 +26,11 @@
                         <h2>Profit: {{ parseFloat((capital +sharesCap - startCap)/startCap*100).toFixed(3)}} %</h2>
                     </div>
                 </div>
-                <div class="col-6 box">
+                <div class="col-6">
+                    <h3 class="box"><b style="color: #5288ff">All Companies</b> </h3>
 
-                    <table class="table">
+
+                    <table class="table box">
                         <thead>
                         <tr>
                             <th>Logo</th>
@@ -62,6 +64,7 @@
 
                 </div>
                 <div class="col-3">
+                    <h3 class="box"><b style="color: #5288ff">News Companies</b> </h3>
                     <table class="table box">
                         <thead>
                         <tr>
@@ -76,7 +79,7 @@
 
                         </thead>
                         <tbody>
-                        <tr v-for="(c, index) in owned" v-if="index <6" >
+                        <tr v-for="(c, index) in owned" v-if="index <5" >
                             <th><img class="img-fluid" style="height: 40px; border-radius: 50%; margin-right: 10px" v-bind:src="c.logo" alt="c.name"></th>
 
                             <th>{{getAmountOfShares(c.name) || 0}}</th>
