@@ -92,7 +92,7 @@
 			async buy(company) {
 				if (this.companyId) {
 					try {
-						const id = await api.placeImmediateBuyOrder(company, 1);
+						const id = await api.placeImmediateBuyOrder(company, 100);
 						alert("We bought a new share with id: " + id);
 					} catch (e) {
 						alert(e.message);
@@ -106,7 +106,7 @@
 			async sell(company) {
 				if (this.companyId) {
 					try {
-						const id = await api.placeImmediateSellOrder(company, 1);
+						const id = await api.placeImmediateSellOrder(company, 100);
 						alert("We sold: " + id);
 					} catch (e) {
 						alert(e.message);
