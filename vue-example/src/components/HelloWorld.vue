@@ -20,9 +20,11 @@
                 <div class="col-4">
                     <div class="box">
                         <h1>Account: </h1>
-                        <h2> balance: {{ parseFloat(capital).toFixed(3) }}</h2>
-                        <h2>Net Profit: {{ parseFloat(capital + sharesCap - startCap).toFixed(3)}}</h2>
+                        <h2>Start Capital: {{parseFloat(startCap)}}</h2>
+                        <h2>Balance: {{ parseFloat(capital).toFixed(3) }}</h2>
                         <h2>Shared Capital: {{ parseFloat(sharesCap).toFixed(3)}}</h2>
+                        <h2>Total Capital: {{ parseFloat(sharesCap + capital).toFixed(3)}}</h2>
+                        <h2>Net Profit: {{ parseFloat(capital + sharesCap - startCap).toFixed(3)}}</h2>
                         <h2>Profit: {{ parseFloat((capital +sharesCap - startCap)/startCap*100).toFixed(3)}} %</h2>
                     </div>
                 </div>
@@ -63,8 +65,6 @@
                                 }}</th>
                             <th>{{parseFloat(c.value).toFixed(3)
                                 }}</th>
-                            <th><button class="buy"> B </button></th>
-
                             <th><button class="buy"  @click="buy(c.id)">B</button></th>
                             <th><button class="sell"  @click="sell(c.id)">S</button></th>
                             <th><button class="liq"  @click="liquadate(c.name, c.id)">0</button></th>
@@ -85,7 +85,7 @@
 		name: "HelloWorld",
 
 		data: () => ({
-            startCap : 1000000,
+            startCap : 1085000,
 			name: "[waiting for server]",
 			companyId: null,
 			news: "No latest news yet!",
@@ -100,7 +100,7 @@
             headlines: [],
             content: [],
             source: [],
-            sharesCap: 0,
+            sharesCap: null,
 		}),
 
 		methods: {
@@ -232,10 +232,12 @@
 				// // var currentDay =
             // },
             SharesCapital(){
-				result =0;
+				var result =0;
 			    for(var s in this.shares){
-			    	result += this.shares[s].amount * this.shares[s].value;
+			    	console.log(this.shares[s]);
+			    	result = result + (this.shares[s].amount * this.shares[s].company.value);
                 }
+                console.log(result)
                 return result;
             },
 			getAmountOfShares(company) {
