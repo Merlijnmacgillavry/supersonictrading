@@ -125,8 +125,9 @@
 
             </div>
             </div>
+        <audio id="audio" src="../assets/sonicring.mp3"></audio>
         </div>
-    </div>
+
 </template>
 
 <script>
@@ -169,6 +170,11 @@
 						"Please wait for the first server response. (Did you fill in your credentials?)"
 					);
 				}
+			},
+			play() {
+				console.log('playing');
+				this.audio.play();
+
 			},
             makeAmounts(companies){
 			  for(var c in companies){
@@ -269,7 +275,7 @@
                 this.capital = game.player.capital;
                 this.sharesCap = this.SharesCapital();
                 this.getOwnedCompanies();
-                this.timeLeft = Math.abs(game.endAt - game.startAt);
+                this.timeLeft = game.endAt - game.startAt;
 
 
 
@@ -285,7 +291,9 @@
                 }
                 this.owned = result;
             },
+
             handleNewsUpdate(news){
+				this.play();
                 this.headlines.unshift(news.headline);
                 this.content.unshift(news.content);
                 this.source(news.source);
