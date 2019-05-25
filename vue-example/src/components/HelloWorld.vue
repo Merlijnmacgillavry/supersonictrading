@@ -62,7 +62,33 @@
 
                 </div>
                 <div class="col-3">
+                    <table class="table box">
+                        <thead>
+                        <tr>
+                            <th>Logo</th>
+                            <th>#Shares</th>
+                            <th>Price</th>
+                            <th>BM</th>
+                            <th>SM</th>
+                            <th>LI</th>
 
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr v-for="(c, index) in owned" v-if="index <6" >
+                            <th><img class="img-fluid" style="height: 40px; border-radius: 50%; margin-right: 10px" v-bind:src="c.logo" alt="c.name"></th>
+
+                            <th>{{getAmountOfShares(c.name) || 0}}</th>
+
+                            <th>{{parseFloat(c.value).toFixed(3)
+                                }}</th>
+                            <th><button class="buy"  @click="buy(c.id)">B</button></th>
+                            <th><button class="sell"  @click="sell(c.id)">S</button></th>
+                            <th><button class="liq"  @click="liquadate(c.name, c.id)">0</button></th>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -207,11 +233,13 @@
                 this.capital = game.player.capital;
                 this.sharesCap = this.SharesCapital();
 
+
+
 			},
             handleNewsUpdate(news){
                 this.headlines.unshift(news.headline);
                 this.content.unshift(news.content);
-                this.source.source(news.source);
+                this.source(news.source);
             },
             // getLatestNews(amount){
 				// // var currentDay =
@@ -219,10 +247,8 @@
             SharesCapital(){
 				var result =0;
 			    for(var s in this.shares){
-			    	console.log(this.shares[s]);
 			    	result = result + (this.shares[s].amount * this.shares[s].company.value);
                 }
-                console.log(result)
                 return result;
             },
 			getAmountOfShares(company) {
@@ -235,11 +261,15 @@
 				}
 				return 0;
 			},
-            getNewsCompanies(){
-			    for(var h in this.headlines){
-			    	
-                }
+            getNewsCompanies(headline, content) {
+		            for (var c in this.companies) {
+			            if (headline.toLowerCase().includes(this.companies[c].name.toLowerCase()) ) {
+				            this.owned.unshift(this.companies[c]);
+			            }
+		            }
+
             }
+
 		},
 		// This method is called once when the component is started
 		mounted() {
@@ -260,6 +290,7 @@
 				next: ({data}) => {
 					// Show the news
 					this.news = data.news.headline;
+					this.getNewsCompanies(data.news.headline, data.news.content);
 					this.handleNewsUpdate(data.news);
 				},
 				error: e => {
